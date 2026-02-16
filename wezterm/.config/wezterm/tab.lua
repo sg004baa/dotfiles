@@ -1,4 +1,5 @@
 local wezterm = require("wezterm")
+local mux = wezterm.mux
 local module = {}
 
 -- =============================================================================
@@ -31,6 +32,14 @@ local TAB_COLORS = {
   background_active = "#928c36",
   background_ssh_active = "#ff6b6b",
   foreground_ssh_active = "#ffffff",
+}
+
+local WORKSPACE_COLORS = {
+  foreground_inactive = "#a0a9cb",
+  background_inactive = "none",
+  foreground_active = "#141414",
+  background_active = "#928c36",
+  space_between = "#1a1a1a",
 }
 
 -- Tab decorations
@@ -142,16 +151,64 @@ function module.apply_to_config(config)
   local ssh_host_cache = {}
 
   -- タイトルキャッシュの更新
-  wezterm.on("update-status", function(_, pane)
+  wezterm.on("update-status", function(window, pane)
     local pane_id = pane:pane_id()
     local user_vars = pane.user_vars or {}
 
     -- SSH中以外はタイトルキャッシュを更新
     if not (user_vars.ssh_host and user_vars.ssh_host ~= "") then
       local cwd_url = pane:get_current_working_dir()
-      -- wezterm.log_info("url" .. cwd_url)
       local cwd = cwd_url and cwd_url.file_path
       title_cache[pane_id] = extract_project_name(cwd)
+
+      local workspace = window:active_workspace()
+      local overrides = window:get_config_overrides() or {}
+
+      -- カラー設定を保持
+      overrides.colors = config.colors
+
+      -- 全ワークスペースを収集
+      local workspace_tabs = {}
+      local all_workspaces = {}
+      for _, w in ipairs(mux.get_workspace_names()) do
+        if w ~= "default" and w ~= "scratch" then
+          table.insert(all_workspaces, w)
+        end
+      end
+      table.insert(all_workspaces, 1, "default")
+
+      -- ワークスペースタブの作成
+      for _, ws_key in ipairs(all_workspaces) do
+        local ws_name = ws_key
+
+        -- アクティブなワークスペースはハイライト表示
+        if ws_key == workspace then
+          table.insert(workspace_tabs, { Background = { Color = WORKSPACE_COLORS.background_active } })
+          table.insert(workspace_tabs, { Foreground = { Color = WORKSPACE_COLORS.foreground_active } })
+          table.insert(workspace_tabs, { Text = " " .. ws_name .. " " })
+        else
+          -- 非アクティブなワークスペースは暗い色で表示
+          table.insert(workspace_tabs, { Background = { Color = WORKSPACE_COLORS.background_inactive } })
+          table.insert(workspace_tabs, { Foreground = { Color = WORKSPACE_COLORS.foreground_inactive } })
+          table.insert(workspace_tabs, { Text = " " .. ws_name .. " " })
+        end
+
+        -- ワークスペース間のスペース
+        table.insert(workspace_tabs, { Background = { Color = WORKSPACE_COLORS.space_between } })
+        table.insert(workspace_tabs, { Text = "" })
+      end
+
+      -- 左側のステータスバーにワークスペースタブを表示
+      window:set_left_status(wezterm.format(workspace_tabs))
+
+      -- 右側のステータスバーにヘルプテキストを表示
+      -- window:set_right_status(wezterm.format({
+      -- 	{ Background = { Color = "#1a1a1a" } },
+      -- 	{ Foreground = { Color = "#606060" } },
+      -- 	{ Text = " Switch workspace: Cmd+S " },
+      -- }))
+
+      window:set_config_overrides(overrides)
     end
   end)
 
