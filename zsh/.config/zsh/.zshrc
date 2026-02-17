@@ -38,32 +38,28 @@ key_conf () {
 # export
 # =========================================================
 export EDITOR=nvim
+export BROWSER=wslview
+export FZF_DEFAULT_COMMAND="rg --files --hidden --follow --glob '!.git/*'"
 export FZF_DEFAULT_OPTS=' --layout=reverse --border=rounded --height=45% --margin=0.5% --bind=tab:down --bind=shift-tab:up '
+export SHELDON_CONFIG_DIR="$HOME/.config/sheldon"
+export ZENO_HOME="$HOME/.config/zeno"
+export ZENO_COMPLETION_FALLBACK=fzf-tab-complete
+
 export PATH="$HOME/bin:$PATH"
-export PATH="/opt/nvim-linux-x86_64/bin:$PATH"
-export PATH="$HOME/dev/flutter/bin:$PATH"
-export PATH="$HOME/develop/yzrh-utils/bin:$PATH"
 export PATH="$HOME/.local/bin:$PATH"
-export PATH="$HOME/lua-language-server/bin:$PATH"
+export PATH="/usr/local/bin:$PATH"
+export PATH="$HOME/go/bin:$PATH"
+export PATH="$HOME/.cargo/bin:$PATH"
+export PATH="$HOME/.local/share/fnm:$PATH"
+export PATH="$HOME/.pyenv/bin:$PATH"
+export JAVA_HOME="/usr/lib/jvm/java-21-openjdk-amd64"
+export PATH="$JAVA_HOME/bin:$PATH"
+export PATH="$HOME/dev/flutter/bin:$PATH"
 export ANDROID_HOME="$HOME/Android/Sdk"
 export ANDROID_SDK_ROOT="$ANDROID_HOME"
 export PATH="$ANDROID_HOME/cmdline-tools/latest/bin:$PATH"
 export PATH="$ANDROID_HOME/platform-tools:$PATH"
-export JAVA_HOME="/usr/lib/jvm/java-21-openjdk-amd64"
-export PATH="$JAVA_HOME/bin:$PATH"
 export PATH="$HOME/.pub-cache/bin:$PATH"
-export GOPATH="$HOME/go"
-export PATH="$GOPATH/bin:$PATH"
-export PATH="/usr/local/bin:$PATH"
-export SHELDON_CONFIG_DIR="$HOME/.config/sheldon"
-export ZENO_HOME=~/.config/zeno
-export ZENO_GIT_CAT="batcat --color=always"
-export ZENO_GIT_TREE="eza --tree"
-export ZENO_COMPLETION_FALLBACK=fzf-tab-complete
-export BROWSER=wslview
-export PATH="$HOME/.cargo/bin:$PATH"
-export PATH="$HOME/.local/share/fnm:$PATH"
-export PATH="$HOME/.pyenv/bin:$PATH"
 
 # =========================================================
 # alias
@@ -81,4 +77,7 @@ alias bat='batcat --color=always'
 
 run_startup
 zsh-defer key_conf
+if [[ -f "$HOME/.zshrc.local" ]] then
+  source "$HOME/.zshrc.local"
+fi
 ensure_zcompiled "$HOME/.config/zsh/.zshrc"
