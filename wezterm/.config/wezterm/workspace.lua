@@ -124,10 +124,10 @@ local keys = {
         act.InputSelector({
           action = wezterm.action_callback(function(_, _, id, label)
             if not id and not label then
-              wezterm.log_info("Workspace selection canceled") -- 入力が空ならキャンセル
-            else
-              win:perform_action(act.SwitchToWorkspace({ name = id }), pane) -- workspace を移動
+              return
             end
+            win:perform_action(act.SwitchToWorkspace({ name = id }), pane) -- workspace を移動
+            win:perform_action(act.PopKeyTable, pane)
           end),
           title = "Select workspace",
           choices = workspaces,
@@ -149,16 +149,17 @@ local key_tables = {
       action = act.PromptInputLine({
         description = "(wezterm) Create new workspace:",
         action = wezterm.action_callback(function(window, _, line)
-          -- canceled
-          if not line then
-            return
-          end
-
           local tab = window:mux_window():active_tab()
           local pane = tab and tab:active_pane()
 
           if not pane then
             wezterm.log_error("No active pane")
+            return
+          end
+
+          -- canceled or empty
+          if not line or line == "" then
+            window:perform_action(act.PopKeyTable, pane)
             return
           end
 
@@ -168,6 +169,7 @@ local key_tables = {
             }),
             pane
           )
+          window:perform_action(act.PopKeyTable, pane)
         end),
       }),
     },
@@ -176,7 +178,7 @@ local key_tables = {
     --   mods = "SHIFT",
     --   action = wezterm.action_callback(kill_workspace()),
     -- },
-    -- { key = "Escape", action = "PopKeyTable" },
+    { key = "Escape", action = act.Multiple({ "PopKeyTable", act.SendKey({ key = "Escape" }) }) },
   },
 }
 
