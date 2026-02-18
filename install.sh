@@ -1,11 +1,16 @@
 #!/bin/bash
-DOTFILES="$(pwd)"
+DOTFILES="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 SCRIPT="$(basename "$0")"
 EXCLUDES=(".git" ".gitignore" "README.md" ".claude" "$SCRIPT")
 
 link() {
   local src="$1"
   local dst="$2"
+
+  local dst_real
+  dst_real="$(realpath -m "$dst")"
+  [[ "$dst_real" == "$DOTFILES" || "$dst_real" == "$DOTFILES/"* ]] && return
+
   for item in "$src"/.[^.]* "$src"/*; do
     [[ -e "$item" ]] || continue
     local name=$(basename "$item")
@@ -16,7 +21,7 @@ link() {
     elif [[ -e "$target" && ! -L "$target" ]]; then
       echo "WARNING: skipped (already exists): $target" >&2
     else
-      ln -sfv "$item" "$target"
+      ln -sfnv "$item" "$target"
     fi
   done
 }
