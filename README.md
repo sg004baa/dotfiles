@@ -1,9 +1,9 @@
 # dotfiles
 
-## Install
+## init
 
 ```bash
-bash install.sh
+bash link.sh
 ```
 
 Symlinks all files/dirs into `$HOME`, recursing into directories that already exist as real dirs. Skips existing non-symlink files with a warning.
