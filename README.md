@@ -1,46 +1,37 @@
-### 初回クローン
+# dotfiles
+
+## Install
+
 ```bash
-git clone git@github.com:skitamurra/dotfiles.git ~/dotfiles
-cd ~/dotfiles
+bash install.sh
 ```
 
-### 展開
+Symlinks all files/dirs into `$HOME`, recursing into directories that already exist as real dirs. Skips existing non-symlink files with a warning.
+
+## Configs
+
+| Path | Tool |
+|---|---|
+| `.config/nvim/` | Neovim |
+| `.config/wezterm/` | WezTerm |
+| `.config/zsh/` | Zsh |
+| `.config/sheldon/` | sheldon |
+| `.config/zeno/` | zeno.zsh |
+| `.config/starship.toml` | Starship |
+| `.config/lazygit/` | lazygit |
+| `.config/lspmux/` | lspmux |
+| `.config/systemd/` | systemd user services |
+
+## Notes
+
+**win32yank**
 ```bash
-stow -vt ~ nvim wezterm starship yazi
-```
-
-## 設定更新時
-
-1. `~/.config/...` を直接編集する
-2. `dotfiles/nvim/.config/...` に反映されていることを確認
-3. Git にコミット & プッシュ
-
-## 別端末での展開
-```bash
-git clone git@github.com:skitamurra/dotfiles.git ~/dotfiles
-cd ~/dotfiles
-stow -vt ~ nvim wezterm starship
-```
-
----
-
-## 依存ツール
-
-### stow
-```bash
-sudo apt install stow
-```
-
-### win32yank
-```bash
-sudo apt install unzip
 curl -LO https://github.com/equalsraf/win32yank/releases/download/v0.0.4/win32yank-x64.zip
 unzip win32yank-x64.zip -d ~/.local/bin
 chmod +x ~/.local/bin/win32yank.exe
 ```
 
-### wezterm
+**WezTerm config path**
 ```powershell
-$w = wsl.exe wslpath -w /home/kitamura/.config/wezterm/wezterm.lua
-[Environment]::SetEnvironmentVariable("WEZTERM_CONFIG_FILE", $w.Trim(), "User")
+[Environment]::SetEnvironmentVariable("WEZTERM_CONFIG_FILE", (wsl.exe sh -c 'wslpath -w $(readlink -f ~/.config/wezterm/wezterm.lua)').Trim(), "User")
 ```
