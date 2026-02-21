@@ -463,7 +463,16 @@ local plugins = {
       },
       priority = 2048 * 3,
     },
-  }
+  },
+  {
+    'cordx56/rustowl',
+    ft = { "rust" },
+    build = 'cargo install rustowl',
+    opts = {
+      auto_enable = true,
+      highlight_style = "underline",
+    },
+  },
 }
 
 require("lazy").setup(plugins, opts)
