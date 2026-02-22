@@ -452,6 +452,7 @@ local plugins = {
       highlight_style = "underline",
     },
   },
+  "folke/sidekick.nvim",
 }
 
 require("lazy").setup(plugins, opts)

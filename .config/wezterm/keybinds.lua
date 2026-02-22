@@ -153,6 +153,7 @@ return {
     { key = 'Insert', mods = 'CTRL', action = act.CopyTo 'PrimarySelection' },
     { key = 'Copy', mods = 'NONE', action = act.CopyTo 'Clipboard' },
     { key = 'Paste', mods = 'NONE', action = act.PasteFrom 'Clipboard' },
+    { key = ".", mods = "CTRL", action = wezterm.action.SendString("\x1b[46;5u") },
   },
 
   key_tables = {
