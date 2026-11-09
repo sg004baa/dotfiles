@@ -35,7 +35,7 @@ end
 function M.grep_file()
   local opts = { layout = "select"}
   if M.get_git_root() then
-    Snacks.picker.git_files(opts, { untracked = true, submodules = false })
+    Snacks.picker.git_files(vim.tbl_extend("force", opts, { untracked = true, submodules = false }))
     return
   end
   Snacks.picker.files(opts)
