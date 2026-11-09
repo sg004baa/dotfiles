@@ -23,6 +23,9 @@ vim.opt.title = true
 vim.opt.titlestring = "%t"
 vim.g.clever_f_smart_case = 1
 vim.opt.exrc = true
+vim.opt.swapfile = false
+vim.opt.undofile = true
+vim.opt.scrolloff = 5
 vim.opt.clipboard = 'unnamedplus'
 vim.opt.sessionoptions = {
   "buffers",
