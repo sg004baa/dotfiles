@@ -15,7 +15,7 @@ prompt:
       emoji: '💄'
     - value: refactor
       name: 'refactor: ♻️   A code change that neither fixes a bug nor adds a feature'
-      emoji: '♻️'
+      emoji: '♻️ '
     - value: perf
       name: 'perf:     ⚡️  A code change that improves performance'
       emoji: '⚡️'
