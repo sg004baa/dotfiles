@@ -41,9 +41,9 @@ vim.api.nvim_create_autocmd('QuitPre', {
 })
 
 vim.api.nvim_create_autocmd('LspAttach', {
-	callback = function()
-		vim.lsp.document_color.enable(false)
-	end,
+  callback = function()
+    vim.lsp.document_color.enable(false)
+  end,
 })
 
 vim.api.nvim_create_autocmd("TermClose", {
