@@ -12,7 +12,6 @@ return {
   settings = {
     ["rust-analyzer"] = {
       cargo = { allTargets = false },
-      checkOnSave = false,
       diagnostics = { enable = true },
       cachePriming = { enable = false },
     }

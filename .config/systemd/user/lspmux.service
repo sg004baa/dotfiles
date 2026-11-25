@@ -4,7 +4,7 @@ Description=Language server multiplexer server
 [Service]
 Type=simple
 ExecStart=/bin/sh -c 'exec lspmux server'
-Environment="PATH=%h/.local/share/nvim/mason/bin:%h/.config/lspmux"
+Environment="PATH=/home/linuxbrew/.linuxbrew/bin:%h/.local/share/nvim/mason/bin:%h/.config/lspmux"
 
 [Install]
 WantedBy=default.target
