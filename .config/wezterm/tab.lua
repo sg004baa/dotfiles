@@ -199,8 +199,10 @@ function module.apply_to_config(config)
         end
       end
 
-      table.insert(workspace_tabs, { Foreground = { Color = WORKSPACE_COLORS.foreground_inactive } })
-      table.insert(workspace_tabs, { Text = " │ " })
+      if #all_workspaces > 0 then
+        table.insert(workspace_tabs, { Foreground = { Color = WORKSPACE_COLORS.foreground_inactive } })
+        table.insert(workspace_tabs, { Text = " │ " })
+      end
       -- 左側のステータスバーにワークスペースタブを表示
       window:set_left_status(wezterm.format(workspace_tabs))
 
